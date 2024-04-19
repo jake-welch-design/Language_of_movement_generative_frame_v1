@@ -1,12 +1,14 @@
 const MARGIN = 0;
 const LINE_ITERATIONS = 6;
-const SPACE = 20;
+const SPACE = 10;
 const CIRC_SCALE = 1.2;
 
 let frameInnerWidth, frameInnerHeight;
 let horizSqAmt, vertSqAmt;
 let squareSpacing = SPACE * LINE_ITERATIONS;
 let horizSqW, vertSqH;
+let fps = 12;
+let vidLength = 30;
 
 let topPatSq1_Pos, topPatSq2_Pos, botPatSq1_Pos, botPatSq2_Pos, rightPatSq1_Pos, rightPatSq2_Pos, leftPatSq1_Pos, leftPatSq2_Pos;
 
@@ -111,8 +113,8 @@ let leftPatSq2_Sequence = [
 ];
 
 function setup() {
-  createCanvas(1920, 1080);
-  frameRate(12);
+  createCanvas(windowWidth, windowHeight);
+  frameRate(fps);
   background(0);
   noCursor();
 
@@ -158,6 +160,10 @@ function windowResized(){
 }
 
 function draw() {
+  // if (frameCount === 1) {
+  //   capturer.start();
+  // }
+
   push();
   topPattern('topPatSq1');
   topPattern('topPatSq2');
@@ -178,13 +184,31 @@ function draw() {
   leftPattern('leftPatSq2');
   pop();
 
-  drawFrameLines();
-  // drawCornerCircles();
-
   //Blur effect
   fill(0,30);
   noStroke();
   rect(0,0,width,height);
+
+
+  push();
+  fill(0);
+  noStroke();
+  rect(0,0,SPACE * (LINE_ITERATIONS-1), SPACE * (LINE_ITERATIONS-1));
+  rect(width-SPACE * (LINE_ITERATIONS-1),0,SPACE * (LINE_ITERATIONS-1), SPACE * (LINE_ITERATIONS-1));
+  rect(0,height-SPACE * (LINE_ITERATIONS-1),SPACE * (LINE_ITERATIONS-1), SPACE * (LINE_ITERATIONS-1));
+  rect(width-SPACE * (LINE_ITERATIONS-1),height-SPACE * (LINE_ITERATIONS-1),SPACE * (LINE_ITERATIONS-1), SPACE * (LINE_ITERATIONS-1));
+
+  pop();
+
+  drawFrameLines();
+  // drawCornerCircles();
+
+  // if (frameCount < fps * vidLength) {
+  //   capturer.capture(canvas);
+  // } else if (frameCount === fps * vidLength) {
+  //   capturer.save();
+  //   capturer.stop();
+  // }
 }
 
 function topPattern(square) {
@@ -225,6 +249,7 @@ function topPattern(square) {
 
   // Update move count and step index
   moveCount++;
+
   if (moveCount === step.count) {
     moveCount = 0;
     stepIndex = (stepIndex + 1) % pattern.length;
