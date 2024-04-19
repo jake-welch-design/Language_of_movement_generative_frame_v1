@@ -211,6 +211,12 @@ function draw() {
   // }
 }
 
+function keyPressed() {
+  if(key == 's'){
+    saveCanvas('frame_v1', 'png');
+  }
+}
+
 function topPattern(square) {
   let pos, moveCount, stepIndex, pattern, originalPos;
   if (square === 'topPatSq1') {
